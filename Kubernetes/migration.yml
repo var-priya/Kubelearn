@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migration
+  namespace: easy-shop-ns
+spec:
+  template:
+    spec:
+      containers:
+      - name: migration
+        image: varpriya/easy-shop-migration:latest  # update with the name that you have build.
+        imagePullPolicy: Always
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://mongodb-svc:27017/easy-shop"
+      restartPolicy: OnFailure

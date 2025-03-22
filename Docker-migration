@@ -1,0 +1,18 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+RUN apk add --no-cache python3 make g++
+
+COPY package*.json tsconfig.json ./
+
+COPY ./scripts /app/scripts
+COPY .db ./.db
+
+RUN npm install 
+
+RUN npm install --save-dev @types/mongoose
+
+ENV NODE_ENV=development
+
+CMD ["npx","ts-node","--project","scripts/tsconfig.json","scripts/migrate-data.ts" ]
